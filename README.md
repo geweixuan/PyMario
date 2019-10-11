@@ -15,3 +15,4 @@ Mario Bros in python &amp; pygame
       <li>Right click the python application and click "Get info"</li>
       <li>Check "Open in low resolution"</li>
    </ul>
+https://www.easyicon.net 图标
