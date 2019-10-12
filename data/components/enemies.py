@@ -127,7 +127,8 @@ class Goomba(Entity):
             owner_object.vel.y = c.GOOMBA_KNOCKED_VEL_Y
             owner_object.animation.current_sprite = sprites.GOOMBA_KNOCKED
             c.total_score += c.GOOMBA_SCORE
-            sounds.kick.play()
+            if c.sound_on:
+                sounds.kick.play()
 
     class Squish_State(State):
         """State when getting squished"""
@@ -139,7 +140,8 @@ class Goomba(Entity):
         def on_enter(self, owner_object):
             owner_object.animation.current_sprite = sprites.GOOMBA_SQUISHED
             owner_object.rect = Rectangle(owner_object.pos, 0, 0)
-            sounds.stomp.play()
+            if c.sound_on:
+                sounds.stomp.play()
             c.total_score += c.GOOMBA_SCORE
 
         def update(self, owner_object):
@@ -257,7 +259,8 @@ class Turtle(Entity):
             owner_object.animation.current_sprite = sprites.TURTLE_SHELL
             owner_object.vel.x = 0
             owner_object.can_kill = False
-            sounds.stomp.play()
+            if c.sound_on:
+                sounds.stomp.play()
 
     class Move_Shell(State):
         """State when turtle is in its shell and moving"""
@@ -268,7 +271,8 @@ class Turtle(Entity):
             return self
 
         def on_enter(self, owner_object):
-            sounds.kick.play()
+            if c.sound_on:
+                sounds.kick.play()
 
         def update(self, owner_object):
             self.can_kill_timer += c.delta_time

@@ -83,7 +83,8 @@ class Super_Mushroom(Entity):
     def check_for_destroy(self):
         """Checks if instance can be destroyed"""
         if self.collected:
-            sounds.powerup.play()
+            if c.sound_on:
+                sounds.powerup.play()
             c.total_score += c.MUSHROOM_SCORE
             level.super_mushrooms.remove(self)
 

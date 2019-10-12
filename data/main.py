@@ -1,7 +1,7 @@
-from . import config as c
-from . import level
-from . import sprites
-from . import sounds
+from data import config as c
+from data import level
+from data import sprites
+from data import sounds
 from .basetypes import Camera, Vector2, Rectangle, Digit_System
 import pygame as pg
 from .components import mario
@@ -11,10 +11,11 @@ class Main():
     def __init__(self):
         c.camera = Camera(Vector2(), c.SCREEN_SIZE.x, c.SCREEN_SIZE.y)
         c.mario = mario.Mario(Rectangle(c.MARIO_START_POSITION, 36, 48))
-
-        pg.mixer.music.load(sounds.main_theme)
-        pg.mixer.music.play()
-
+        try:
+            pg.mixer.music.load(sounds.main_theme)
+            pg.mixer.music.play()
+        except Exception:
+            print("MUSIC INIT ERROR!")
         self.quit_state = None
         self.out_of_time = False
 
@@ -89,10 +90,11 @@ class Main():
         #If timer is lower than 100, play out of time music
         if not c.mario.current_mario_state == 'Win_State':
             if not c.final_count_down and self.time.total_value < 100 and not self.out_of_time:
-                pg.mixer.music.stop()
-                pg.mixer.music.set_endevent(c.OUT_OF_TIME_END)
-                pg.mixer.music.load(sounds.out_of_time)
-                pg.mixer.music.play()
+                if c.sound_on:
+                    pg.mixer.music.stop()
+                    pg.mixer.music.set_endevent(c.OUT_OF_TIME_END)
+                    pg.mixer.music.load(sounds.out_of_time)
+                    pg.mixer.music.play()
                 self.out_of_time = True
 
         #If the timer runs out and mario has not won, kill mario
@@ -103,11 +105,13 @@ class Main():
         if c.final_count_down and self.time.total_value > 0:
             self.time.update_value(self.time.total_value - 1)
             c.total_score += c.TIME_SCORE
-            sounds.count_down.play()
-            sounds.count_down.set_volume(0.15)
+            if c.sound_on:
+                sounds.count_down.play()
+                sounds.count_down.set_volume(0.15)
             if self.time.total_value == 0:
-                sounds.count_down.stop()
-                sounds.coin.play()
+                if c.sound_on:
+                    sounds.count_down.stop()
+                    sounds.coin.play()
 
     def update_level(self):
         """Update all Gameobjects in the level"""
@@ -147,9 +151,10 @@ class Main():
                 return False
 
             if event.type == c.OUT_OF_TIME_END:
-                pg.mixer.music.stop()
-                pg.mixer.music.load(sounds.main_theme_sped_up)
-                pg.mixer.music.play()
+                if c.sound_on:
+                    pg.mixer.music.stop()
+                    pg.mixer.music.load(sounds.main_theme_sped_up)
+                    pg.mixer.music.play()
 
         if c.mario.to_menu:
             self.quit_state = 'menu'

@@ -87,9 +87,11 @@ class Question(Game_Object):
                 owner_object.contents.deployed = True
                 c.total_score += c.COIN_SCORE
                 c.collected_coins += 1
-                sounds.coin.play()
+                if c.sound_on:
+                    sounds.coin.play()
             else:
-                sounds.powerup_appears.play()
+                if c.sound_on:
+                    sounds.powerup_appears.play()
         
         def update(self, owner_object):
             owner_object.animation.bounce_anim()
@@ -173,7 +175,8 @@ class Brick(Game_Object):
 
         def on_enter(self, owner_object):
             owner_object.instantiate_fragments()
-            sounds.brick_smash.play()
+            if c.sound_on:
+                sounds.brick_smash.play()
 
         def update(self, owner_object):
             if self.wait_for_frame > 0:

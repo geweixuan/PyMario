@@ -238,7 +238,8 @@ class Mario(Entity):
         if self.current_mario_state == 'Small_Mario':
             tile.state_machine.on_event('bounce')
             if tile.__class__.__name__ == 'Brick':
-                sounds.bump.play()
+                if c.sound_on:
+                    sounds.bump.play()
         elif self.current_mario_state == 'Big_Mario':
             tile.state_machine.on_event('break')
             if tile.__class__.__name__ == 'Question':
@@ -337,9 +338,11 @@ class Mario(Entity):
 
         def on_enter(self, owner_object):
             if owner_object.current_mario_state == 'Small_Mario':
-                sounds.small_jump.play()
+                if c.sound_on:
+                    sounds.small_jump.play()
             else:
-                sounds.big_jump.play()
+                if c.sound_on:
+                    sounds.big_jump.play()
         
         def update(self, owner_object):
             owner_object.vel.y = c.JUMP_VELOCITY
@@ -522,7 +525,8 @@ class Mario(Entity):
             owner_object.animation.start_height = owner_object.pos.y
             owner_object.animation.start_sprite_height = owner_object.animation.current_sprite[3]
             owner_object.freeze_movement = True
-            sounds.pipe.play()
+            if c.sound_on:
+                sounds.pipe.play()
 
         def update(self, owner_object):
             owner_object.animation.shrink_anim()
@@ -584,10 +588,11 @@ class Mario(Entity):
             owner_object.vel.x = 0
             owner_object.freeze_movement = True
             owner_object.freeze_input = True
-            pg.mixer.music.stop()
-            pg.mixer.music.set_endevent(c.DEATH_SONG_END)
-            pg.mixer.music.load(sounds.death)
-            pg.mixer.music.play()
+            if c.sound_on:
+                pg.mixer.music.stop()
+                pg.mixer.music.set_endevent(c.DEATH_SONG_END)
+                pg.mixer.music.load(sounds.death)
+                pg.mixer.music.play()
 
         def update(self, owner_object):
             self.death_timer += c.delta_time
@@ -612,8 +617,9 @@ class Mario(Entity):
             owner_object.freeze_movement = True
             owner_object.freeze_input = True
             owner_object.vel = Vector2()
-            pg.mixer.music.stop()
-            sounds.flagpole_sound.play()
+            if c.sound_on:
+                pg.mixer.music.stop()
+                sounds.flagpole_sound.play()
 
         def update(self, owner_object):
 
@@ -632,9 +638,10 @@ class Mario(Entity):
                     owner_object.freeze_movement = False
                     owner_object.pos.x = c.flagpole.pos.x + c.flagpole.rect.w
                     self.animation_step = 2
-                    pg.mixer.music.set_endevent(c.WIN_SONG_END)
-                    pg.mixer.music.load(sounds.stage_clear)
-                    pg.mixer.music.play()
+                    if c.sound_on:
+                        pg.mixer.music.set_endevent(c.WIN_SONG_END)
+                        pg.mixer.music.load(sounds.stage_clear)
+                        pg.mixer.music.play()
 
             elif self.animation_step == 2:
                 c.ACCELERATION = c.MARIO_ACCELERATION

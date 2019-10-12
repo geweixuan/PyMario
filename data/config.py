@@ -9,6 +9,8 @@ keys = None
 delta_time = None
 mario = None
 final_count_down = False
+#控制声音，True-打开, False 关闭
+sound_on = False
 
 #Colors for level loading
 BLACK = (0, 0, 0, 255)
