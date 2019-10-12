@@ -1,12 +1,16 @@
 @echo off
+::环境变量设置
+::python3
+set PATH=%PATH%;E:\tools\python_64bit;E:\tools\python_64bit\Scripts
+::python2.7
+::set PATH=%PATH%;E:\tools\Python27;E:\tools\Python27\Scripts
 
-echo "=============================start package============================="
 goto package
 goto copy_resource
 
 ::python打包
 :package
-echo "=============================packaging============================="
+echo "=============================start package============================="
 pyinstaller -w -i .\data\resources\graphics\icon_logo.ico Mario_Bros.py -y
 
 ::复制运行所需声音及图片资源文件
